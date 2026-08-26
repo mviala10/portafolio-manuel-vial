@@ -1,0 +1,69 @@
+backend:
+  name: git-gateway
+  branch: main
+
+publish_mode: simple
+media_folder: "assets/img"
+public_folder: "/assets/img"
+
+locale: "es"
+
+collections:
+  - name: "settings"
+    label: "Datos del sitio"
+    files:
+      - file: "content/settings.json"
+        name: "settings"
+        label: "Información general"
+        fields:
+          - { label: "Nombre / título del sitio", name: "siteTitle", widget: "string" }
+          - { label: "Rol o especialidad", name: "role", widget: "string", required: false }
+          - { label: "Frase corta (tagline)", name: "tagline", widget: "string", required: false }
+          - { label: "Sobre mí", name: "about", widget: "text", required: false }
+          - { label: "Email de contacto", name: "email", widget: "string", required: false }
+          - label: "Redes o enlaces"
+            name: "socialLinks"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Nombre a mostrar", name: "label", widget: "string" }
+              - { label: "Enlace", name: "url", widget: "string" }
+
+  - name: "portfolio"
+    label: "Trabajos"
+    files:
+      - file: "content/portfolio.json"
+        name: "portfolio"
+        label: "Todos los trabajos"
+        fields:
+          - label: "Trabajos"
+            name: "items"
+            widget: "list"
+            label_singular: "Trabajo"
+            summary: "{{title}} — {{type}}"
+            fields:
+              - { label: "Título", name: "title", widget: "string" }
+              - label: "Tipo de trabajo"
+                name: "type"
+                widget: "select"
+                options:
+                  - { label: "Video", value: "video" }
+                  - { label: "Gráfica", value: "graphic" }
+              - { label: "Descripción", name: "description", widget: "text", required: false }
+              - label: "Enlace de video (YouTube o Vimeo)"
+                name: "videoUrl"
+                widget: "string"
+                required: false
+                hint: "Solo si el tipo es Video. Pega el link normal, por ejemplo https://youtu.be/xxxxx o https://vimeo.com/xxxxx."
+              - label: "Imagen"
+                name: "image"
+                widget: "image"
+                required: false
+                hint: "Obligatoria si el tipo es Gráfica. Para Video es opcional: si no subes una, se usa la miniatura de YouTube automáticamente (Vimeo no la genera sola)."
+              - { label: "Cliente o proyecto", name: "client", widget: "string", required: false }
+              - { label: "Año", name: "year", widget: "number", value_type: "int", required: false }
+              - label: "Etiquetas"
+                name: "tags"
+                widget: "list"
+                required: false
+                field: { label: "Etiqueta", name: "tag", widget: "string" }
