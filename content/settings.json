@@ -1,8 +1,26 @@
 {
   "siteTitle": "Manuel Vial",
-  "role": "Video & Diseño",
-  "tagline": "Trabajos seleccionados en video y gráfica",
-  "about": "Este es mi portafolio. Aquí voy a ir subiendo mis mejores trabajos en video y diseño gráfico. Edita este texto desde el panel /admin para contar quién eres y qué haces.",
+  "role": "Director de Arte & Director Creativo",
+  "tagline": "Storytelling audiovisual con mirada de cine.",
+  "about": "Especializado en construir marca a través de redes sociales, con foco artístico en la creación de contenido documental —y, a futuro, series— pensado para contar historias del modo más cinematográfico, profesional y estéticamente pulido posible.",
   "email": "",
-  "socialLinks": []
+  "socialLinks": [],
+  "heroVideo": "",
+  "pasiones": "Apasionado por el deporte, el fútbol, la música y el impacto social, Manuel encuentra en cada uno de esos mundos una historia que contar. Los traduce en piezas gráficas, cápsulas audiovisuales y documentales que buscan imprimirle una atmósfera de cine a cada equipo, cada canción y cada causa que retrata.",
+  "pasionesTags": ["Deporte", "Fútbol", "Música", "Impacto social"],
+  "trayectoria": [
+    {
+      "organizacion": "Pontificia Universidad Católica de Chile",
+      "periodo": "5 años",
+      "descripcion": "Formación académica que sentó las bases de su mirada creativa.",
+      "logo": "assets/img/logos/uc.png"
+    },
+    {
+      "organizacion": "Club Atlético Colina y Corporación Cambiemos Chile",
+      "periodo": "Desde 2024",
+      "descripcion": "Creación de marca y dirección de arte para Atlético Colina —identidad visual, contenido gráfico y audiovisual— junto con producción de contenido audiovisual con foco en impacto social para Corporación Cambiemos Chile.",
+      "logo": "assets/img/logos/atletico-colina.png",
+      "logo2": "assets/img/logos/cambiemos-chile.png"
+    }
+  ]
 }
