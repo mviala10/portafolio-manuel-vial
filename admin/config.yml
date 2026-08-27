@@ -18,9 +18,20 @@ collections:
         label: "Información general"
         fields:
           - { label: "Nombre / título del sitio", name: "siteTitle", widget: "string" }
-          - { label: "Rol o especialidad", name: "role", widget: "string", required: false }
-          - { label: "Frase corta (tagline)", name: "tagline", widget: "string", required: false }
-          - { label: "Sobre mí", name: "about", widget: "text", required: false }
+          - { label: "Rol o cargo (ej: Director de Arte & Director Creativo)", name: "role", widget: "string", required: false }
+          - { label: "Frase corta (tagline, debajo del rol)", name: "tagline", widget: "string", required: false }
+          - label: "Bio / descripción (portada)"
+            name: "about"
+            widget: "text"
+            required: false
+            hint: "Aparece bajo tu nombre en la portada. 2-3 líneas ideal."
+          - label: "Video de fondo de portada"
+            name: "heroVideo"
+            widget: "file"
+            required: false
+            media_folder: "/assets/video"
+            public_folder: "/assets/video"
+            hint: "Video corto (10-20 segundos) en loop, sin sonido. Formato MP4, lo más liviano posible (idealmente menos de 15 MB) para que cargue rápido."
           - { label: "Email de contacto", name: "email", widget: "string", required: false }
           - label: "Redes o enlaces"
             name: "socialLinks"
@@ -29,6 +40,38 @@ collections:
             fields:
               - { label: "Nombre a mostrar", name: "label", widget: "string" }
               - { label: "Enlace", name: "url", widget: "string" }
+          - label: "Texto de pasiones"
+            name: "pasiones"
+            widget: "text"
+            required: false
+            hint: "Párrafo sobre tus pasiones (deporte, música, impacto social, etc.)."
+          - label: "Etiquetas de pasiones"
+            name: "pasionesTags"
+            widget: "list"
+            required: false
+            field: { label: "Etiqueta", name: "tag", widget: "string" }
+          - label: "Trayectoria (línea de tiempo)"
+            name: "trayectoria"
+            widget: "list"
+            required: false
+            label_singular: "Etapa"
+            summary: "{{organizacion}} — {{periodo}}"
+            fields:
+              - { label: "Organización (si son dos, sepáralas con 'y')", name: "organizacion", widget: "string" }
+              - { label: "Período (ej: 5 años, o Desde 2024)", name: "periodo", widget: "string" }
+              - { label: "Descripción breve", name: "descripcion", widget: "text", required: false }
+              - label: "Logo"
+                name: "logo"
+                widget: "image"
+                required: false
+                media_folder: "/assets/img/logos"
+                public_folder: "/assets/img/logos"
+              - label: "Segundo logo (opcional, si son dos organizaciones en esta etapa)"
+                name: "logo2"
+                widget: "image"
+                required: false
+                media_folder: "/assets/img/logos"
+                public_folder: "/assets/img/logos"
 
   - name: "portfolio"
     label: "Trabajos"
@@ -50,6 +93,17 @@ collections:
                 options:
                   - { label: "Video", value: "video" }
                   - { label: "Gráfica", value: "graphic" }
+              - label: "Categoría de proyecto"
+                name: "categoria"
+                widget: "select"
+                required: false
+                hint: "Define en qué pestaña horizontal aparece este trabajo en la sección Proyectos."
+                options:
+                  - { label: "Creación de marca Atlético Colina", value: "marca-colina" }
+                  - { label: "Trabajo Gráfico Atlético Colina", value: "grafica-colina" }
+                  - { label: "Creación de videos con IA", value: "ia" }
+                  - { label: "Videos Cambiemos Chile", value: "cambiemos" }
+                  - { label: "Otro", value: "otro" }
               - { label: "Descripción", name: "description", widget: "text", required: false }
               - label: "Enlace de video (YouTube o Vimeo)"
                 name: "videoUrl"
