@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Manuel Vial — Portafolio</title>
-<meta name="description" content="Portafolio de trabajos en video y diseño gráfico." />
+<title>Manuel Vial — Director de Arte & Director Creativo</title>
+<meta name="description" content="Portafolio de Manuel Vial: dirección de arte, creación de marca y contenido audiovisual con mirada de cine." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -12,63 +12,77 @@
 </head>
 <body>
 
-<header class="site-header">
-  <div class="wrap">
-    <div class="tally"><span class="tally-dot"></span> Portafolio en línea</div>
-    <div class="header-row">
-      <div>
-        <h1 class="wordmark" id="wordmark">Manuel Vial</h1>
-        <div class="role" id="role"></div>
-        <p class="tagline" id="tagline"></p>
-        <p class="about" id="about" hidden></p>
-        <div class="socials" id="socials"></div>
-      </div>
-      <a class="edit-link" href="/admin/">✎ Editar contenido</a>
-    </div>
-  </div>
+<div class="topbar">
+<div class="wrap topbar-row">
+<span class="tally"><span class="tally-dot"></span> Portafolio en línea</span>
+<a class="edit-link" href="/admin/">✎ Editar contenido</a>
+</div>
+</div>
+
+<header class="hero" id="hero">
+<div class="hero-media">
+<video id="hero-video" autoplay muted loop playsinline></video>
+<div class="hero-fallback" id="hero-fallback"></div>
+<div class="hero-scrim"></div>
+</div>
+<div class="hero-content wrap">
+<h1 class="hero-title" id="wordmark">Manuel Vial</h1>
+<p class="hero-role" id="role"></p>
+<p class="hero-about" id="about"></p>
+<div class="socials" id="socials"></div>
+</div>
+<a class="scroll-cue" href="#trayectoria" aria-label="Bajar">
+<span></span>
+</a>
 </header>
 
-<main class="wrap">
-  <div class="filters" id="filters"></div>
+<section class="section timeline-section" id="trayectoria">
+<div class="wrap">
+<p class="section-kicker">Trayectoria</p>
+<h2 class="section-title">Un camino entre la formación y la práctica</h2>
+<ol class="timeline" id="timeline"></ol>
+</div>
+</section>
 
-  <div class="empty" id="empty" hidden>
-    <p class="empty-title">Aún no hay trabajos publicados</p>
-    <p>Entra al <a href="/admin/">panel de edición</a> para agregar tu primer video o pieza gráfica. Se publica al instante, sin tocar código.</p>
-  </div>
+<section class="section pasiones-section" id="pasiones">
+<div class="wrap pasiones-inner">
+<p class="section-kicker">Lo que lo mueve</p>
+<p class="pasiones-text" id="pasiones-text"></p>
+<div class="pasiones-tags" id="pasiones-tags"></div>
+</div>
+</section>
 
-  <div class="grid" id="grid"></div>
-</main>
+<section class="section proyectos-section" id="proyectos">
+<div class="wrap">
+<p class="section-kicker">Proyectos</p>
+<h2 class="section-title">Trabajos por categoría</h2>
+
+<div class="filters" id="filters"></div>
+
+<div class="empty" id="empty" hidden>
+<p class="empty-title">Aún no hay trabajos publicados</p>
+<p>Entra al <a href="/admin/">panel de edición</a> para agregar tu primer video o pieza gráfica. Se publica al instante, sin tocar código.</p>
+</div>
+
+<div class="grid" id="grid"></div>
+</div>
+</section>
 
 <footer class="site-footer">
-  <div class="wrap" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;width:100%;">
-    <span id="footer-name">© Manuel Vial</span>
-    <a href="/admin/">Editar contenido</a>
-  </div>
+<div class="wrap footer-row">
+<span id="footer-name">© Manuel Vial</span>
+<a href="/admin/">Editar contenido</a>
+</div>
 </footer>
 
 <div class="lightbox-overlay" id="lightbox-overlay" hidden>
-  <div class="lightbox">
-    <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar">✕</button>
-    <div class="lightbox-media" id="lightbox-media"></div>
-    <div class="lightbox-body" id="lightbox-body"></div>
-  </div>
+<div class="lightbox">
+<button class="lightbox-close" id="lightbox-close" aria-label="Cerrar">✕</button>
+<div class="lightbox-media" id="lightbox-media"></div>
+<div class="lightbox-body" id="lightbox-body"></div>
+</div>
 </div>
 
 <script src="script.js"></script>
-
-<!-- Necesario para que el enlace de invitación de Netlify Identity funcione
-     (ver PASO 5 de la guía de despliegue). No afecta el resto del sitio. -->
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", function (user) {
-      if (!user) {
-        window.netlifyIdentity.on("login", function () {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
-</script>
 </body>
 </html>

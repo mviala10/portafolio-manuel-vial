@@ -5,6 +5,14 @@
 (function () {
   "use strict";
 
+  const CATEGORIES = [
+    { key: "marca-colina", label: "Creación de marca Atlético Colina" },
+    { key: "grafica-colina", label: "Trabajo Gráfico Atlético Colina" },
+    { key: "ia", label: "Creación de videos con IA" },
+    { key: "cambiemos", label: "Videos Cambiemos Chile" },
+    { key: "otro", label: "Otros" },
+  ];
+
   const state = { items: [], filter: "all" };
 
   function el(tag, attrs, ...children) {
@@ -74,17 +82,13 @@
     return type === "video" ? "Video" : "Gráfica";
   }
 
-  function renderHeader(settings) {
-    document.title = (settings.siteTitle || "Portafolio") + " — Portafolio";
+  /* ---------- hero ---------- */
+
+  function renderHero(settings) {
+    document.title = (settings.siteTitle || "Portafolio") + (settings.role ? " — " + settings.role : "");
     document.getElementById("wordmark").textContent = settings.siteTitle || "Portafolio";
     document.getElementById("role").textContent = settings.role || "";
-    document.getElementById("tagline").textContent = settings.tagline || "";
-
-    const about = document.getElementById("about");
-    if (settings.about) {
-      about.textContent = settings.about;
-      about.hidden = false;
-    }
+    document.getElementById("about").textContent = settings.about || settings.tagline || "";
 
     const socials = document.getElementById("socials");
     socials.innerHTML = "";
@@ -94,21 +98,97 @@
     links.forEach((s) => {
       socials.appendChild(el("a", { href: s.url, target: "_blank", rel: "noopener" }, s.label || s.url));
     });
+
+    const video = document.getElementById("hero-video");
+    if (settings.heroVideo) {
+      video.src = settings.heroVideo;
+      video.addEventListener("canplay", () => video.classList.add("is-ready"), { once: true });
+      video.load();
+    }
   }
 
+  /* ---------- trayectoria ---------- */
+
+  function renderTimeline(settings) {
+    const list = document.getElementById("timeline");
+    const section = document.getElementById("trayectoria");
+    list.innerHTML = "";
+    const items = settings.trayectoria || [];
+    if (!items.length) {
+      section.hidden = true;
+      return;
+    }
+    section.hidden = false;
+    items.forEach((step) => {
+      const logos = [step.logo, step.logo2].filter(Boolean);
+      const logoNode = logos.length > 1
+        ? el(
+            "span",
+            { class: "timeline-logo-cluster" },
+            logos.map((src) => el(
+              "span",
+              { class: "timeline-logo-wrap dark-badge" },
+              el("img", { class: "timeline-logo", src, alt: step.organizacion || "" })
+            ))
+          )
+        : el(
+            "span",
+            { class: "timeline-logo-wrap" + (logos[0] ? " dark-badge" : "") },
+            logos[0] ? el("img", { class: "timeline-logo", src: logos[0], alt: step.organizacion || "" }) : null
+          );
+
+      list.appendChild(
+        el(
+          "li",
+          { class: "timeline-item" },
+          logoNode,
+          el(
+            "div",
+            { class: "timeline-body" },
+            el("h3", { class: "timeline-org" }, step.organizacion || ""),
+            step.periodo ? el("p", { class: "timeline-period" }, step.periodo) : null,
+            step.descripcion ? el("p", { class: "timeline-desc" }, step.descripcion) : null
+          )
+        )
+      );
+    });
+  }
+
+  /* ---------- pasiones ---------- */
+
+  function renderPasiones(settings) {
+    const section = document.getElementById("pasiones");
+    const text = document.getElementById("pasiones-text");
+    const tags = document.getElementById("pasiones-tags");
+    if (!settings.pasiones) {
+      section.hidden = true;
+      return;
+    }
+    section.hidden = false;
+    text.textContent = settings.pasiones;
+    tags.innerHTML = "";
+    (settings.pasionesTags || []).forEach((t) => {
+      const label = typeof t === "string" ? t : t.tag;
+      if (label) tags.appendChild(el("span", { class: "tag" }, label));
+    });
+  }
+
+  /* ---------- proyectos ---------- */
+
   function renderFilters(items) {
-    const counts = { all: items.length, video: 0, graphic: 0 };
-    items.forEach((i) => { if (counts[i.type] !== undefined) counts[i.type]++; });
+    const counts = { all: items.length };
+    CATEGORIES.forEach((c) => { counts[c.key] = 0; });
+    items.forEach((i) => {
+      const key = i.categoria || "otro";
+      if (counts[key] === undefined) counts[key] = 0;
+      counts[key]++;
+    });
 
     const bar = document.getElementById("filters");
     bar.innerHTML = "";
-    const defs = [
-      { key: "all", label: "Todos" },
-      { key: "video", label: "Video" },
-      { key: "graphic", label: "Gráfica" },
-    ];
+    const defs = [{ key: "all", label: "Todos" }, ...CATEGORIES];
     defs.forEach((d) => {
-      if (d.key !== "all" && counts[d.key] === 0) return;
+      if (d.key !== "all" && !counts[d.key]) return;
       const btn = el(
         "button",
         {
@@ -167,7 +247,7 @@
     const empty = document.getElementById("empty");
     grid.innerHTML = "";
 
-    const filtered = state.filter === "all" ? items : items.filter((i) => i.type === state.filter);
+    const filtered = state.filter === "all" ? items : items.filter((i) => (i.categoria || "otro") === state.filter);
 
     if (items.length === 0) {
       empty.hidden = false;
@@ -238,11 +318,19 @@
       if (e.key === "Escape") closeLightbox();
     });
 
-    Promise.all([
-      fetch("content/settings.json").then((r) => r.json()).catch(() => ({})),
-      fetch("content/portfolio.json").then((r) => r.json()).catch(() => ({ items: [] })),
-    ]).then(([settings, portfolio]) => {
-      renderHeader(settings || {});
+    const dataSource = window.__PREVIEW_DATA
+      ? Promise.resolve([window.__PREVIEW_DATA.settings, window.__PREVIEW_DATA.portfolio])
+      : Promise.all([
+          fetch("content/settings.json").then((r) => r.json()).catch(() => ({})),
+          fetch("content/portfolio.json").then((r) => r.json()).catch(() => ({ items: [] })),
+        ]);
+
+    dataSource.then(([settings, portfolio]) => {
+      settings = settings || {};
+      renderHero(settings);
+      renderTimeline(settings);
+      renderPasiones(settings);
+
       const items = (portfolio && portfolio.items) || [];
       state.items = items;
       renderFilters(items);
